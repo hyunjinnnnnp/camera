@@ -1,21 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import AppLoading from "expo-app-loading";
+import React, { useState } from "react";
+import * as Font from "expo-font";
+import { EvilIcons, Feather } from "@expo/vector-icons";
+import TakePhoto from "./TakePhoto";
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  const [ready, setReady] = useState(false);
+  const onFinish = () => setReady(true);
+  const startLoading = async () => {
+    await Font.loadAsync(EvilIcons.font);
+    await Font.loadAsync(Feather.font);
+  };
+  if (!ready) {
+    return (
+      <AppLoading
+        startAsync={startLoading}
+        onFinish={onFinish}
+        onError={console.error}
+      />
+    );
+  }
+  return <TakePhoto />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
